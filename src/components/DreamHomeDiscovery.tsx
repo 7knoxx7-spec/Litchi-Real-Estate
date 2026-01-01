@@ -39,7 +39,7 @@ import {
 interface DreamHomeDiscoveryProps {
   isOpen: boolean;
   onClose: () => void;
-  language: "ar" | "en" | "ur";
+  language: "ar" | "en";
   userProfile: "male" | "female";
 }
 
@@ -324,8 +324,8 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getText = (ar: string, en: string, ur: string) => {
-    return language === "ar" ? ar : language === "en" ? en : ur;
+  const getText = (ar: string, en: string) => {
+    return language === "ar" ? ar : en;
   };
 
   // Advanced matching algorithm
@@ -371,7 +371,6 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
     const message = getText(
       `مرحباً، أنا مهتم بـ ${property.title.ar}`,
       `Hello, I'm interested in ${property.title.en}`,
-      `ہیلو، میں ${property.title.ur} میں دلچسپی رکھتا ہوں`,
     );
 
     window.open(
@@ -393,11 +392,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
             </div>
             <div>
               <h2 className="text-xl font-bold bg-gradient-to-r from-gold-400 to-emerald-400 bg-clip-text text-transparent">
-                {getText(
-                  "اكتشف منزل أحلامك",
-                  "Discover Your Dream Home",
-                  "اپنے خوابوں کا گھر دریافت کریں",
-                )}
+                {getText("اكتشف منزل أحلامك", "Discover Your Dream Home")}
               </h2>
               <p className="text-sm text-slate-400 font-normal">
                 {getText(

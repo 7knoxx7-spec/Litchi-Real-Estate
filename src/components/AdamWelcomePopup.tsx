@@ -37,9 +37,7 @@ const AdamWelcomePopup: React.FC<AdamWelcomePopupProps> = ({
   onLanguageSelect,
   onStartDreamDiscovery,
 }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState<"ar" | "en">(
-    "ar",
-  );
+  const [selectedLanguage, setSelectedLanguage] = useState<"ar" | "en">("ar");
   const [step, setStep] = useState<"language" | "welcome" | "features">(
     "language",
   );
@@ -78,8 +76,8 @@ const AdamWelcomePopup: React.FC<AdamWelcomePopupProps> = ({
     }
   };
 
-  const getText = (ar: string, en: string, ur: string) => {
-    return selectedLanguage === "ar" ? ar : selectedLanguage === "en" ? en : ur;
+  const getText = (ar: string, en: string) => {
+    return selectedLanguage === "ar" ? ar : en;
   };
 
   return (

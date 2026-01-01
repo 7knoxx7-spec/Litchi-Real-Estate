@@ -142,14 +142,14 @@ const Navigation = () => {
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-2xl lg:text-3xl font-black gradient-text group-hover:scale-105 transition-transform duration-300">
-                  RoomUAE PRO
+                  Litchi Real Estate
                 </h1>
                 <p className="text-sm text-slate-300 -mt-1 group-hover:text-slate-200 transition-colors duration-300">
                   {language === "ar"
-                    ? "عقارات الإمارات المتميزة"
+                    ? "ليتشي العقارية – منصة السكن الذكية"
                     : language === "en"
-                      ? "Premium UAE Properties"
-                      : "یواے کی پریمیم پراپرٹیز"}
+                      ? "Litchi Real Estate – Smart Housing Platform"
+                      : "لیچی رئیل اسٹیٹ – اسمارٹ ہاؤسنگ پلیٹ فارم"}
                 </p>
               </div>
             </Link>
@@ -254,64 +254,71 @@ const Navigation = () => {
 
               {/* User Menu */}
               {token ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-slate-300 hover:text-white"
-                  >
-                    <User className="h-4 w-4 mr-2" />
-                    {user.name || (language === "ar"
-                      ? "حسابي"
-                      : language === "en"
-                        ? "My Account"
-                        : "میرا اکاؤنٹ")}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-slate-800 border-slate-700">
-                  <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
-                    {language === "ar"
-                      ? "الملف الشخصي"
-                      : language === "en"
-                        ? "Profile"
-                        : "پروفائل"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
-                    {language === "ar"
-                      ? "إعلاناتي"
-                      : language === "en"
-                        ? "My Listings"
-                        : "میرے اشتہارات"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
-                    {language === "ar"
-                      ? "الإعدادات"
-                      : language === "en"
-                        ? "Settings"
-                        : "سیٹنگز"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout} className="text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer">
-                    {language === "ar"
-                      ? "تسجيل الخروج"
-                      : language === "en"
-                        ? "Logout"
-                        : "لاگ آؤٹ"}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-slate-300 hover:text-white"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      {user.name ||
+                        (language === "ar"
+                          ? "حسابي"
+                          : language === "en"
+                            ? "My Account"
+                            : "میرا اکاؤنٹ")}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-slate-800 border-slate-700">
+                    <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
+                      {language === "ar"
+                        ? "الملف الشخصي"
+                        : language === "en"
+                          ? "Profile"
+                          : "پروفائل"}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
+                      {language === "ar"
+                        ? "إعلاناتي"
+                        : language === "en"
+                          ? "My Listings"
+                          : "میرے اشتہارات"}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
+                      {language === "ar"
+                        ? "الإعدادات"
+                        : language === "en"
+                          ? "Settings"
+                          : "سیٹنگز"}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer"
+                    >
+                      {language === "ar"
+                        ? "تسجيل الخروج"
+                        : language === "en"
+                          ? "Logout"
+                          : "لاگ آؤٹ"}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
                 <div className="flex gap-2">
-                   <Link to="/login">
-                     <Button variant="ghost" className="text-slate-300 hover:text-white">
-                        {language === "ar" ? "دخول" : "Login"}
-                     </Button>
-                   </Link>
-                   <Link to="/register">
-                     <Button className="bg-gold-500 text-black hover:bg-gold-400">
-                        {language === "ar" ? "تسجيل" : "Register"}
-                     </Button>
-                   </Link>
+                  <Link to="/login">
+                    <Button
+                      variant="ghost"
+                      className="text-slate-300 hover:text-white"
+                    >
+                      {language === "ar" ? "دخول" : "Login"}
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button className="bg-gold-500 text-black hover:bg-gold-400">
+                      {language === "ar" ? "تسجيل" : "Register"}
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>

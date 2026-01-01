@@ -41,7 +41,7 @@ import {
 } from "lucide-react";
 
 const Index = () => {
-  const [language, setLanguage] = useState<"ar" | "en" | "ur">("ar");
+  const [language, setLanguage] = useState<"ar" | "en">("ar");
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
   const [showDreamDiscovery, setShowDreamDiscovery] = useState(false);
   const [userProfile, setUserProfile] = useState<"male" | "female">("male");
@@ -146,7 +146,9 @@ const Index = () => {
                     <>
                       Discover Your
                       <br />
-                      <span className="animate-glow">Perfect Housing in UAE</span>
+                      <span className="animate-glow">
+                        Perfect Housing in UAE
+                      </span>
                     </>
                   )}
                 </h1>
@@ -316,8 +318,8 @@ const Index = () => {
             <div className="text-center mb-20">
               <h2 className="section-title animate-bounce-in">
                 {language === "ar"
-                  ? "لماذا تختار RoomUAE PRO؟"
-                  : "Why Choose RoomUAE PRO?"}
+                  ? "لماذا تختار ليتشي العقارية؟"
+                  : "Why Choose Litchi Real Estate?"}
               </h2>
               <p className="text-2xl text-slate-300 mt-6 max-w-4xl mx-auto leading-relaxed animate-fade-in-up">
                 {language === "ar"
@@ -387,8 +389,8 @@ const Index = () => {
                 </h2>
                 <p className="text-2xl md:text-3xl text-slate-200 max-w-4xl mx-auto leading-relaxed font-light">
                   {language === "ar"
-                    ? "انضم إلى آلاف العملاء السعداء واكتشف العقار المثالي في الإمارات"
-                    : "Join thousands of happy clients and discover your perfect property in UAE"}
+                    ? "انضم إلى عشرات الآلاف من الشباب والفتيات واكتشف سكنك المثالي في الإمارات"
+                    : "Join hundreds of thousands of young adults and discover your perfect housing in UAE"}
                 </p>
               </div>
 
@@ -623,8 +625,8 @@ const Index = () => {
               <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
                 <p className="text-slate-300 text-lg">
                   {language === "ar"
-                    ? "© 2024 RoomUAE PRO. جميع الحقوق محفوظة."
-                    : "© 2024 RoomUAE PRO. All rights reserved."}
+                    ? "© 2024 ليتشي العقارية. جميع الحقوق محفوظة."
+                    : "© 2024 Litchi Real Estate. All rights reserved."}
                 </p>
                 <div className="flex items-center space-x-6 text-slate-400">
                   <a
