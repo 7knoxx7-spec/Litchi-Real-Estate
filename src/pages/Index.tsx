@@ -8,6 +8,8 @@ import LuxurySearchBar from "@/components/LuxurySearchBar";
 import Navigation from "@/components/Navigation";
 import AdamWelcomePopup from "@/components/AdamWelcomePopup";
 import DreamHomeDiscovery from "@/components/DreamHomeDiscovery";
+import { useQuery } from "@tanstack/react-query";
+import { getProperties } from "@/lib/api";
 import { MOCK_PROPERTIES, STATS, FEATURES } from "@/constants";
 import {
   TrendingUp,
