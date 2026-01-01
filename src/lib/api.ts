@@ -31,7 +31,9 @@ export const getMessages = async (conversationId: string) => {
 };
 
 export const sendMessage = async (conversationId: string, content: string) => {
-  const response = await api.post(`/conversations/${conversationId}/messages`, { content });
+  const response = await api.post(`/conversations/${conversationId}/messages`, {
+    content,
+  });
   return response.data;
 };
 
@@ -40,8 +42,21 @@ export const getReviews = async (propertyId: string) => {
   return response.data;
 };
 
-export const createReview = async (propertyId: string, data: { rating: number, comment: string }) => {
+export const createReview = async (
+  propertyId: string,
+  data: { rating: number; comment: string },
+) => {
   const response = await api.post(`/properties/${propertyId}/reviews`, data);
+  return response.data;
+};
+
+export const updateProfile = async (data: any) => {
+  const response = await api.put("/auth/profile", data);
+  return response.data;
+};
+
+export const updatePassword = async (data: any) => {
+  const response = await api.put("/auth/password", data);
   return response.data;
 };
 

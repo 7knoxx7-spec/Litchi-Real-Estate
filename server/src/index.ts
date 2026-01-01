@@ -171,15 +171,64 @@ app.post("/api/auth/register", validate(registerSchema), async (req, res) => {
 
 app.get("/api/auth/me", authenticateToken, async (req: any, res) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      include: {
+        favorites: { include: { property: true } },
+      },
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Parse property details in favorites
+    const favorites = user.favorites.map((fav) => ({
+      ...fav.property,
+      location: JSON.parse(fav.property.location),
+      images: JSON.parse(fav.property.images),
+      features: fav.property.features ? JSON.parse(fav.property.features) : [],
+    }));
+
     res.json({
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
       avatar: user.avatar,
+      favorites: favorites,
     });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.put("/api/auth/profile", authenticateToken, async (req: any, res) => {
+  try {
+    const { name, email, avatar } = req.body;
+    const user = await prisma.user.update({
+      where: { id: req.user.id },
+      data: { name, email, avatar },
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.put("/api/auth/password", authenticateToken, async (req: any, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const validPassword = await bcrypt.compare(currentPassword, user.password);
+    if (!validPassword)
+      return res.status(400).json({ message: "Invalid current password" });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({
+      where: { id: req.user.id },
+      data: { password: hashedPassword },
+    });
+    res.json({ message: "Password updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
