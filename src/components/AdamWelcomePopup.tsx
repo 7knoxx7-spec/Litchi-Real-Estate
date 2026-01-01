@@ -27,7 +27,7 @@ import {
 interface AdamWelcomePopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onLanguageSelect: (language: "ar" | "en" | "ur") => void;
+  onLanguageSelect: (language: "ar" | "en") => void;
   onStartDreamDiscovery: () => void;
 }
 
@@ -37,7 +37,7 @@ const AdamWelcomePopup: React.FC<AdamWelcomePopupProps> = ({
   onLanguageSelect,
   onStartDreamDiscovery,
 }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState<"ar" | "en" | "ur">(
+  const [selectedLanguage, setSelectedLanguage] = useState<"ar" | "en">(
     "ar",
   );
   const [step, setStep] = useState<"language" | "welcome" | "features">(
@@ -60,14 +60,6 @@ const AdamWelcomePopup: React.FC<AdamWelcomePopupProps> = ({
       flag: "🇺🇸",
       greeting: "Hello! I'm Adam",
       subtitle: "Your AI Real Estate Assistant",
-    },
-    {
-      code: "ur" as const,
-      name: "اردو",
-      nameEn: "Urdu",
-      flag: "🇵🇰",
-      greeting: "ہیلو! میں آدم ہوں",
-      subtitle: "آپ کا AI رئیل اسٹیٹ مشیر",
     },
   ];
 

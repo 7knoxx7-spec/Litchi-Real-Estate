@@ -55,7 +55,7 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLanguageSelect = (lang: "ar" | "en" | "ur") => {
+  const handleLanguageSelect = (lang: "ar" | "en") => {
     setLanguage(lang);
   };
 
