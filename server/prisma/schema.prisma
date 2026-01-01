@@ -23,6 +23,11 @@ model User {
 
   properties Property[]
   reviews    Review[]
+  notifications Notification[]
+  payments      Payment[]
+  favorites     Favorite[]
+  sentMessages  Message[]
+  conversations Conversation[] @relation("UserConversations")
 }
 
 model Property {
@@ -37,7 +42,7 @@ model Property {
   bedrooms    Int
   bathrooms   Int
   area        Float
-  location    String   // JSON string for {emirate, area, address}
+  location    String   // JSON string for {emirate, area, address, latitude, longitude}
   images      String   // JSON string array
   features    String?  // JSON string array
   isFeatured  Boolean  @default(false)
@@ -47,6 +52,8 @@ model Property {
   agent       User     @relation(fields: [agentId], references: [id])
   
   reviews     Review[]
+  payments    Payment[]
+  favorites   Favorite[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -60,4 +67,66 @@ model Review {
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id])
   createdAt  DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      String   // info, alert, success
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  amount    Float
+  currency  String   @default("AED")
+  status    String   // pending, completed, failed
+  method    String   // stripe, paypal
+  reference String?  // transaction id
+  propertyId String?
+  property  Property? @relation(fields: [propertyId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  participants User[] @relation("UserConversations")
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id])
+  content        String
+  createdAt      DateTime     @default(now())
+}
+
+model Analytics {
+  id         String   @id @default(uuid())
+  event      String   // view, search, share, click
+  details    String?  // JSON
+  userId     String?
+  propertyId String?
+  createdAt  DateTime @default(now())
+}
+
+model Favorite {
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([userId, propertyId])
 }

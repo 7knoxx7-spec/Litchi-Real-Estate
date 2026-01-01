@@ -70,7 +70,7 @@ interface InteractiveMapProps {
 }
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({
-  language = "ar",
+  language = "en",
   properties = [],
   selectedPropertyId,
   onPropertySelect,
