@@ -244,6 +244,7 @@ const Navigation = () => {
               </DropdownMenu>
 
               {/* User Menu */}
+              {token ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -252,11 +253,11 @@ const Navigation = () => {
                     className="text-slate-300 hover:text-white"
                   >
                     <User className="h-4 w-4 mr-2" />
-                    {language === "ar"
+                    {user.name || (language === "ar"
                       ? "حسابي"
                       : language === "en"
                         ? "My Account"
-                        : "میرا اکاؤنٹ"}
+                        : "میرا اکاؤنٹ")}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-slate-800 border-slate-700">
@@ -281,7 +282,7 @@ const Navigation = () => {
                         ? "Settings"
                         : "سیٹنگز"}
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="text-slate-300 hover:text-white hover:bg-slate-700">
+                  <DropdownMenuItem onClick={handleLogout} className="text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer">
                     {language === "ar"
                       ? "تسجيل الخروج"
                       : language === "en"
@@ -290,6 +291,20 @@ const Navigation = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              ) : (
+                <div className="flex gap-2">
+                   <Link to="/login">
+                     <Button variant="ghost" className="text-slate-300 hover:text-white">
+                        {language === "ar" ? "دخول" : "Login"}
+                     </Button>
+                   </Link>
+                   <Link to="/register">
+                     <Button className="bg-gold-500 text-black hover:bg-gold-400">
+                        {language === "ar" ? "تسجيل" : "Register"}
+                     </Button>
+                   </Link>
+                </div>
+              )}
             </div>
 
             {/* Mobile menu button */}

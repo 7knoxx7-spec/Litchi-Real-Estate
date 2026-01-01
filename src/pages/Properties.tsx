@@ -39,8 +39,13 @@ const Properties = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("featured");
 
-  // Use properties data from constants
-  const properties = MOCK_PROPERTIES;
+  const { data: apiProperties, isLoading } = useQuery({
+    queryKey: ['properties'],
+    queryFn: getProperties,
+  });
+
+  // Use properties data from API or constants
+  const properties = apiProperties || MOCK_PROPERTIES;
 
   const quickFilters = [
     {
