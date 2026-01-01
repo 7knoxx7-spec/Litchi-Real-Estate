@@ -207,9 +207,56 @@ app.post("/api/upload", authenticateToken, (req, res) => {
 });
 
 // Properties
-app.get("/api/properties", async (req, res) => {
+app.get("/api/properties/trending", async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
+      take: 5,
+      orderBy: { price: 'desc' }, // Mock trending logic
+      include: { agent: { select: { id: true, name: true, avatar: true } } }
+    });
+    const formatted = properties.map(p => ({
+      ...p,
+      location: JSON.parse(p.location),
+      images: JSON.parse(p.images),
+      features: p.features ? JSON.parse(p.features) : []
+    }));
+    res.json(formatted);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/api/properties/recommendations", async (req, res) => {
+  try {
+    const properties = await prisma.property.findMany({
+      take: 5,
+      orderBy: { createdAt: 'desc' },
+      include: { agent: { select: { id: true, name: true, avatar: true } } }
+    });
+    const formatted = properties.map(p => ({
+      ...p,
+      location: JSON.parse(p.location),
+      images: JSON.parse(p.images),
+      features: p.features ? JSON.parse(p.features) : []
+    }));
+    res.json(formatted);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/api/properties", async (req, res) => {
+  try {
+    const { minPrice, maxPrice, type, bedrooms } = req.query;
+    
+    const where: any = {};
+    if (minPrice) where.price = { ...where.price, gte: parseFloat(minPrice as string) };
+    if (maxPrice) where.price = { ...where.price, lte: parseFloat(maxPrice as string) };
+    if (type) where.type = type;
+    if (bedrooms) where.bedrooms = parseInt(bedrooms as string);
+
+    const properties = await prisma.property.findMany({
+      where,
       include: {
         agent: { select: { id: true, name: true, avatar: true, email: true } },
       },
@@ -224,6 +271,57 @@ app.get("/api/properties", async (req, res) => {
     res.json(formattedProps);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Notifications
+app.get("/api/notifications", authenticateToken, async (req: any, res) => {
+  try {
+    const notifications = await prisma.notification.findMany({
+      where: { userId: req.user.id },
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json(notifications);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Analytics
+app.post("/api/analytics", async (req, res) => {
+  try {
+    const { event, details, userId, propertyId } = req.body;
+    await prisma.analytics.create({
+      data: {
+        event,
+        details: JSON.stringify(details),
+        userId: userId || null,
+        propertyId: propertyId || null
+      }
+    });
+    res.status(201).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Payments
+app.post("/api/payments", authenticateToken, async (req: any, res) => {
+  try {
+    const { amount, propertyId } = req.body;
+    const payment = await prisma.payment.create({
+      data: {
+        userId: req.user.id,
+        amount,
+        propertyId,
+        status: "completed",
+        method: "stripe",
+        reference: "txn_" + Date.now()
+      }
+    });
+    res.json(payment);
+  } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 });
