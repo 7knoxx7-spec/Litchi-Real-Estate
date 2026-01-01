@@ -11,6 +11,8 @@ import Contact from "./pages/Contact";
 import AIDemo from "./pages/AIDemo";
 import Maps from "./pages/Maps";
 import AdamChat from "./pages/AdamChat";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
