@@ -53,12 +53,24 @@ model Property {
   
   reviews     Review[]
   payments    Payment[]
-  favorites   Favorite[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  favorites Favorite[]
+  reviews   Review[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {
+  id         String   @id @default(uuid())
+  rating     Int
+  comment    String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model Notification {
   id         String   @id @default(uuid())
   rating     Int
   comment    String?
