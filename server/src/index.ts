@@ -327,6 +327,67 @@ app.get("/api/properties", async (req, res) => {
   }
 });
 
+// Favorites
+app.get("/api/favorites", authenticateToken, async (req: any, res) => {
+  try {
+    const favorites = await prisma.favorite.findMany({
+      where: { userId: req.user.id },
+      include: {
+        property: {
+          include: {
+            agent: {
+              select: { id: true, name: true, avatar: true, email: true },
+            },
+          },
+        },
+      },
+      orderBy: { assignedAt: "desc" },
+    });
+    const formatted = favorites.map((f) => ({
+      ...f.property,
+      location: JSON.parse(f.property.location),
+      images: JSON.parse(f.property.images),
+      features: f.property.features ? JSON.parse(f.property.features) : [],
+    }));
+    res.json(formatted);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/api/favorites", authenticateToken, async (req: any, res) => {
+  try {
+    const { propertyId } = req.body;
+    await prisma.favorite.upsert({
+      where: { userId_propertyId: { userId: req.user.id, propertyId } },
+      update: {},
+      create: { userId: req.user.id, propertyId },
+    });
+    res.status(201).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.delete(
+  "/api/favorites/:propertyId",
+  authenticateToken,
+  async (req: any, res) => {
+    try {
+      await prisma.favorite.delete({
+        where: {
+          userId_propertyId: {
+            userId: req.user.id,
+            propertyId: req.params.propertyId,
+          },
+        },
+      });
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
 // Notifications
 app.get("/api/notifications", authenticateToken, async (req: any, res) => {
   try {
@@ -483,6 +544,15 @@ app.get("/api/properties/:id", async (req, res) => {
     });
     if (!property)
       return res.status(404).json({ message: "Property not found" });
+
+    // Increment views and record analytics
+    await prisma.property.update({
+      where: { id: req.params.id },
+      data: { views: { increment: 1 } },
+    });
+    await prisma.analytics.create({
+      data: { event: "view", propertyId: req.params.id },
+    });
 
     res.json({
       ...property,

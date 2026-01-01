@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import Navbar from "@/components/Navbar";
+import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Reviews from "@/components/Reviews";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,16 @@ import {
   CheckCircle,
   Calendar,
   Eye,
+  Facebook,
+  Twitter,
+  Send,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,6 +67,31 @@ const PropertyDetails = () => {
     typeof property.features === "string"
       ? JSON.parse(property.features)
       : property.features || [];
+
+  const handleShare = (platform: string) => {
+    const shareUrl = `http://localhost:3000/api/share/${property.id}`;
+    const text = `Check out this property: ${property.title}`;
+    let url = "";
+
+    switch (platform) {
+      case "whatsapp":
+        url = `https://wa.me/?text=${encodeURIComponent(text + " " + shareUrl)}`;
+        break;
+      case "facebook":
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        break;
+      case "twitter":
+        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+        break;
+      case "telegram":
+        url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -104,6 +138,34 @@ const PropertyDetails = () => {
                   <Badge variant="secondary" className="mt-2">
                     {property.type}
                   </Badge>
+                  <div className="mt-3 flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="px-3 py-2 bg-slate-800 rounded-lg text-white hover:text-gold-400">
+                          <Share2 className="h-4 w-4 inline mr-2" />
+                          {language === "ar" ? "مشاركة" : "Share"}
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-slate-900 border-slate-700">
+                        <DropdownMenuItem onClick={() => handleShare("whatsapp")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                          <MessageCircle className="h-4 w-4 mr-2 text-green-500" />
+                          WhatsApp
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleShare("facebook")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                          <Facebook className="h-4 w-4 mr-2 text-blue-600" />
+                          Facebook
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleShare("twitter")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                          <Twitter className="h-4 w-4 mr-2 text-blue-400" />
+                          Twitter
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleShare("telegram")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                          <Send className="h-4 w-4 mr-2 text-sky-500" />
+                          Telegram
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
               </div>
 
