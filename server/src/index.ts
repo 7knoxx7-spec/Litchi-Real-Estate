@@ -16,7 +16,111 @@ dotenv.config();
 
 const app = express();
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 3000;
+// Chat / Conversations
+app.get("/api/conversations", authenticateToken, async (req: any, res) => {
+  try {
+    const conversations = await prisma.conversation.findMany({
+      where: { participants: { some: { id: req.user.id } } },
+      include: {
+        participants: {
+          select: { id: true, name: true, avatar: true },
+        },
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+    res.json(conversations);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/api/conversations", authenticateToken, async (req: any, res) => {
+  try {
+    let { participantId } = req.body;
+
+    if (participantId === "support") {
+      const agent = await prisma.user.findFirst({
+        where: { role: { in: ["ADMIN", "AGENT"] } },
+      });
+      if (!agent)
+        return res.status(404).json({ message: "No support agents available" });
+      participantId = agent.id;
+    }
+
+    const existing = await prisma.conversation.findFirst({
+      where: {
+        AND: [
+          { participants: { some: { id: req.user.id } } },
+          { participants: { some: { id: participantId } } },
+        ],
+      },
+    });
+
+    if (existing) return res.json(existing);
+
+    const conversation = await prisma.conversation.create({
+      data: {
+        participants: {
+          connect: [{ id: req.user.id }, { id: participantId }],
+        },
+      },
+    });
+    res.json(conversation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get(
+  "/api/conversations/:id/messages",
+  authenticateToken,
+  async (req: any, res) => {
+    try {
+      const messages = await prisma.message.findMany({
+        where: { conversationId: req.params.id },
+        orderBy: { createdAt: "asc" },
+        include: { sender: { select: { id: true, name: true, avatar: true } } },
+      });
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
+
+app.post(
+  "/api/conversations/:id/messages",
+  authenticateToken,
+  async (req: any, res) => {
+    try {
+      const { content } = req.body;
+      const message = await prisma.message.create({
+        data: {
+          content,
+          senderId: req.user.id,
+          conversationId: req.params.id,
+        },
+        include: { sender: { select: { id: true, name: true, avatar: true } } },
+      });
+
+      await prisma.conversation.update({
+        where: { id: req.params.id },
+        data: { updatedAt: new Date() },
+      });
+
+      res.json(message);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
+
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
 // Ensure uploads directory exists
@@ -211,14 +315,14 @@ app.get("/api/properties/trending", async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
       take: 5,
-      orderBy: { views: 'desc' }, // Real trending logic based on views
-      include: { agent: { select: { id: true, name: true, avatar: true } } }
+      orderBy: { views: "desc" }, // Real trending logic based on views
+      include: { agent: { select: { id: true, name: true, avatar: true } } },
     });
-    const formatted = properties.map(p => ({
+    const formatted = properties.map((p) => ({
       ...p,
       location: JSON.parse(p.location),
       images: JSON.parse(p.images),
-      features: p.features ? JSON.parse(p.features) : []
+      features: p.features ? JSON.parse(p.features) : [],
     }));
     res.json(formatted);
   } catch (error) {
@@ -230,14 +334,14 @@ app.get("/api/properties/recommendations", async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
       take: 5,
-      orderBy: { createdAt: 'desc' },
-      include: { agent: { select: { id: true, name: true, avatar: true } } }
+      orderBy: { createdAt: "desc" },
+      include: { agent: { select: { id: true, name: true, avatar: true } } },
     });
-    const formatted = properties.map(p => ({
+    const formatted = properties.map((p) => ({
       ...p,
       location: JSON.parse(p.location),
       images: JSON.parse(p.images),
-      features: p.features ? JSON.parse(p.features) : []
+      features: p.features ? JSON.parse(p.features) : [],
     }));
     res.json(formatted);
   } catch (error) {
@@ -248,10 +352,12 @@ app.get("/api/properties/recommendations", async (req, res) => {
 app.get("/api/properties", async (req, res) => {
   try {
     const { minPrice, maxPrice, type, bedrooms } = req.query;
-    
+
     const where: any = {};
-    if (minPrice) where.price = { ...where.price, gte: parseFloat(minPrice as string) };
-    if (maxPrice) where.price = { ...where.price, lte: parseFloat(maxPrice as string) };
+    if (minPrice)
+      where.price = { ...where.price, gte: parseFloat(minPrice as string) };
+    if (maxPrice)
+      where.price = { ...where.price, lte: parseFloat(maxPrice as string) };
     if (type) where.type = type;
     if (bedrooms) where.bedrooms = parseInt(bedrooms as string);
 
@@ -280,7 +386,7 @@ app.get("/api/notifications", authenticateToken, async (req: any, res) => {
   try {
     const notifications = await prisma.notification.findMany({
       where: { userId: req.user.id },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: "desc" },
     });
     res.json(notifications);
   } catch (error) {
@@ -297,8 +403,8 @@ app.post("/api/analytics", async (req, res) => {
         event,
         details: JSON.stringify(details),
         userId: userId || null,
-        propertyId: propertyId || null
-      }
+        propertyId: propertyId || null,
+      },
     });
     res.status(201).json({ success: true });
   } catch (error) {
@@ -317,8 +423,8 @@ app.post("/api/payments", authenticateToken, async (req: any, res) => {
         propertyId,
         status: "completed",
         method: "stripe",
-        reference: "txn_" + Date.now()
-      }
+        reference: "txn_" + Date.now(),
+      },
     });
     res.json(payment);
   } catch (error) {
