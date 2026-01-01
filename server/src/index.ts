@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -18,6 +20,27 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
+
+// Zod Schemas
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
+
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+  name: z.string().min(2),
+});
+
+const validate = (schema: any) => (req: any, res: any, next: any) => {
+  try {
+    schema.parse(req.body);
+    next();
+  } catch (e: any) {
+    res.status(400).json(e.errors);
+  }
+};
 
 // Middleware
 const authenticateToken = (req: any, res: any, next: any) => {
@@ -180,6 +203,10 @@ app.get("/api/properties/:id", async (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+export default app;
