@@ -384,6 +384,46 @@ app.post("/api/payments", authenticateToken, async (req: any, res) => {
   }
 });
 
+// Reviews
+app.get("/api/properties/:id/reviews", async (req, res) => {
+  try {
+    const reviews = await prisma.review.findMany({
+      where: { propertyId: req.params.id },
+      include: {
+        user: { select: { id: true, name: true, avatar: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post(
+  "/api/properties/:id/reviews",
+  authenticateToken,
+  async (req: any, res) => {
+    try {
+      const { rating, comment } = req.body;
+      const review = await prisma.review.create({
+        data: {
+          rating,
+          comment,
+          userId: req.user.id,
+          propertyId: req.params.id,
+        },
+        include: {
+          user: { select: { id: true, name: true, avatar: true } },
+        },
+      });
+      res.json(review);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
+
 app.get("/api/properties/:id", async (req, res) => {
   try {
     const property = await prisma.property.findUnique({
