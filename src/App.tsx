@@ -13,6 +13,7 @@ import Maps from "./pages/Maps";
 import AdamChat from "./pages/AdamChat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
 import { ChatSupport } from "@/components/ChatSupport";
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/adam" element={<AdamChat />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ChatSupport />
