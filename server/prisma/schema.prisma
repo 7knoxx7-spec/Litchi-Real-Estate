@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("USER") // ADMIN, AGENT, USER
+  phone     String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  properties Property[]
+  reviews    Review[]
+}
+
+model Property {
+  id          String   @id @default(uuid())
+  title       String
+  titleEn     String?
+  description String
+  descriptionEn String?
+  price       Float
+  priceType   String   @default("yearly") // yearly, monthly, weekly, daily
+  type        String   // apartment, villa, etc.
+  bedrooms    Int
+  bathrooms   Int
+  area        Float
+  location    String   // JSON string for {emirate, area, address}
+  images      String   // JSON string array
+  features    String?  // JSON string array
+  isFeatured  Boolean  @default(false)
+  status      String   @default("available") // available, rented, sold
+  
+  agentId     String
+  agent       User     @relation(fields: [agentId], references: [id])
+  
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  rating     Int
+  comment    String?
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+  createdAt  DateTime @default(now())
+}
