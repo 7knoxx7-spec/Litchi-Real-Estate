@@ -406,7 +406,7 @@ app.get("/api/notifications", authenticateToken, async (req: any, res: any) => {
 });
 
 // Analytics
-app.post("/api/analytics", async (req: Request, res: Response) => {
+app.post("/api/analytics", async (req: any, res: any) => {
   try {
     const { event, details, userId, propertyId } = req.body;
     await prisma.analytics.create({
