@@ -10,7 +10,7 @@ import AdamWelcomePopup from "@/components/AdamWelcomePopup";
 import DreamHomeDiscovery from "@/components/DreamHomeDiscovery";
 import { useQuery } from "@tanstack/react-query";
 import { getProperties } from "@/lib/api";
-import { MOCK_PROPERTIES, STATS, FEATURES } from "@/constants";
+import { STATS, FEATURES } from "@/constants";
 import {
   TrendingUp,
   Users,
@@ -65,16 +65,16 @@ const Index = () => {
   };
 
   const { data: apiProperties } = useQuery({
-    queryKey: ['properties'],
+    queryKey: ["properties"],
     queryFn: getProperties,
   });
 
-  const properties = apiProperties || MOCK_PROPERTIES;
+  const properties = apiProperties || [];
 
   // Get featured properties
-  const featuredProperties = properties.filter(
-    (property: any) => property.featured,
-  ).slice(0, 3);
+  const featuredProperties = properties
+    .filter((property: any) => property.featured)
+    .slice(0, 3);
 
   // Convert constants to component format
   const stats = STATS.map((stat) => ({
