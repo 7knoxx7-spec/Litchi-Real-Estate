@@ -3,8 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
-import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -16,6 +14,34 @@ const prisma = new PrismaClient();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|webp/;
+    const extname = allowedTypes.test(
+      path.extname(file.originalname).toLowerCase(),
+    );
+    const mimetype = allowedTypes.test(file.mimetype);
+
+    if (extname && mimetype) {
+      return cb(null, true);
+    } else {
+      cb(new Error("Only images are allowed (jpeg, jpg, png, webp)"));
+    }
+  },
+});
+
+// Rate Limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
+
+app.use(limiter);
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
