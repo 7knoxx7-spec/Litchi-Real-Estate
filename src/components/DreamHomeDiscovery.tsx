@@ -351,9 +351,9 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
       ...property,
       aiScore: Math.random() * 30 + 70, // 70-100% match
       reasons: [
-        getText("مناسب للميزانية", "Budget friendly", "بجٹ کے موافق"),
-        getText("بيئة آمنة", "Safe environment", "محفوظ ماحول"),
-        getText("قريب من المرافق", "Near amenities", "سہولات کے قریب"),
+        getText("مناسب للميزانية", "Budget friendly"),
+        getText("بيئة آمنة", "Safe environment"),
+        getText("قريب من المرافق", "Near amenities"),
       ],
     }));
 
@@ -431,7 +431,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                 <Card className="bg-slate-800/60 border-slate-700/50">
                   <CardContent className="p-6">
                     <label className="block text-sm font-medium text-slate-300 mb-3">
-                      {getText("العمر", "Age", "عمر")}
+                      {getText("العمر", "Age")}
                     </label>
                     <Slider
                       value={[userAge]}
@@ -553,7 +553,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                 onClick={() => setStep("preferences")}
               >
                 <ArrowRight className="h-4 w-4 mr-2" />
-                {getText("التالي", "Next", "اگلا")}
+                {getText("التالي", "Next")}
               </Button>
             </div>
           )}
@@ -575,7 +575,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
               <Card className="bg-slate-800/60 border-slate-700/50">
                 <CardContent className="p-6">
                   <label className="block text-sm font-medium text-slate-300 mb-4">
-                    {getText("أسلوب الحياة", "Lifestyle", "طرز زندگی")}
+                    {getText("أسلوب الحياة", "Lifestyle")}
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {[
@@ -649,7 +649,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                   className="flex-1 border-slate-600 text-slate-300"
                   onClick={() => setStep("profile")}
                 >
-                  {getText("السابق", "Previous", "پچھلا")}
+                  {getText("السابق", "Previous")}
                 </Button>
                 <Button
                   className="flex-1 bg-gradient-to-r from-gold-500 to-emerald-500 hover:from-gold-600 hover:to-emerald-600"
@@ -728,7 +728,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                             />
                             <Badge className="absolute top-3 right-3 bg-emerald-500/90 text-white">
                               {Math.round(property.aiScore)}%{" "}
-                              {getText("مطابقة", "Match", "میچ")}
+                              {getText("مطابقة", "Match")}
                             </Badge>
                             <Badge className="absolute top-3 left-3 bg-gold-500/90 text-white">
                               {property.price} AED
@@ -750,7 +750,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                               <span className="text-sm text-slate-300">
                                 {property.roommates.current}/
                                 {property.roommates.max}{" "}
-                                {getText("ساكن", "residents", "رہائشی")}
+                                {getText("ساكن", "residents")}
                               </span>
                             </div>
 
@@ -774,7 +774,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                                   onClick={() => handleContactAgent(property)}
                                 >
                                   <Phone className="h-3 w-3 mr-1" />
-                                  {getText("اتصال", "Contact", "رابطہ")}
+                                  {getText("اتصال", "Contact")}
                                 </Button>
                                 <Button
                                   size="sm"
@@ -786,7 +786,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                                   }}
                                 >
                                   <Share2 className="h-3 w-3 mr-1" />
-                                  {getText("شارك", "Share", "شیئر")}
+                                  {getText("شارك", "Share")}
                                 </Button>
                               </div>
                               <div className="flex items-center gap-1">
@@ -879,7 +879,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                         {social.label}
                       </p>
                       <p className="text-xs text-slate-400 mt-1">
-                        {getText("شارك الآن", "Share now", "ابھی شیئر")}
+                        {getText("شارك الآن", "Share now")}
                       </p>
                     </CardContent>
                   </Card>
@@ -921,7 +921,7 @@ const DreamHomeDiscovery: React.FC<DreamHomeDiscoveryProps> = ({
                 className="w-full border-slate-600 text-slate-300"
                 onClick={() => setStep("matches")}
               >
-                {getText("العودة للنتائج", "Back to Results", "نتائج پر واپس")}
+                {getText("العودة للنتائج", "Back to Results")}
               </Button>
             </div>
           )}

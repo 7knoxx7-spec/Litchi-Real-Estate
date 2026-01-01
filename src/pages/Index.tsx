@@ -471,13 +471,13 @@ const Index = () => {
                     </div>
                   </div>
                   <h3 className="text-2xl font-black gradient-text">
-                    RoomUAE PRO
+                    Litchi Real Estate
                   </h3>
                 </div>
                 <p className="text-slate-300 leading-relaxed text-lg">
                   {language === "ar"
-                    ? "المنصة الرائدة للعقارات المتميزة في دولة الإمارات العربية المتحدة"
-                    : "The leading platform for premium properties in the United Arab Emirates"}
+                    ? "ليتشي العقارية – المنصة الرائدة للسكن الذكي في الإمارات"
+                    : "Litchi Real Estate – Leading smart housing platform in UAE"}
                 </p>
                 <div className="flex items-center space-x-4">
                   <Button

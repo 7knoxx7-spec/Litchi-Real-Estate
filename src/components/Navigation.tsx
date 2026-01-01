@@ -66,7 +66,11 @@ const Navigation = () => {
     {
       href: "/adam",
       label:
-        language === "ar" ? "آدم AI" : language === "en" ? "Adam AI" : "آدم AI",
+        language === "ar"
+          ? "ليتشي AI"
+          : language === "en"
+            ? "Litchi AI"
+            : "لیچی AI",
       icon: Crown,
       badge: "LIVE",
       special: true,
