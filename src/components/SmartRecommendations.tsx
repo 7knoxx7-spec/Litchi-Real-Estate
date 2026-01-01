@@ -79,10 +79,12 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
     queryFn: getProperties,
   });
 
-  const properties = apiProperties || MOCK_PROPERTIES;
+  const properties = apiProperties || [];
 
   useEffect(() => {
-    generateRecommendations();
+    if (properties.length > 0) {
+      generateRecommendations();
+    }
   }, [preferences, properties]);
 
   const generateRecommendations = async () => {
