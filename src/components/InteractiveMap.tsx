@@ -11,7 +11,6 @@ import L from "leaflet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MOCK_PROPERTIES } from "@/constants";
 import {
   MapPin,
   Navigation,

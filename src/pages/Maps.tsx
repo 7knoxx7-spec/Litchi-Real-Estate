@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MOCK_PROPERTIES } from "@/constants";
+import { useQuery } from "@tanstack/react-query";
+import { getProperties } from "@/lib/api";
 import {
   Map as MapIcon,
   Filter,

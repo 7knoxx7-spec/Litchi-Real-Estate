@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import SearchBar from "@/components/SearchBar";
 import PropertyCard from "@/components/PropertyCard";
+import { getProperties } from "@/lib/api";
 import { MOCK_PROPERTIES } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -40,7 +41,7 @@ const Properties = () => {
   const [sortBy, setSortBy] = useState("featured");
 
   const { data: apiProperties, isLoading } = useQuery({
-    queryKey: ['properties'],
+    queryKey: ["properties"],
     queryFn: getProperties,
   });
 

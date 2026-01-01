@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import PropertyCard from "@/components/PropertyCard";
-import { MOCK_PROPERTIES } from "@/constants";
+import { useQuery } from "@tanstack/react-query";
+import { getProperties } from "@/lib/api";
 import {
   Brain,
   TrendingUp,
@@ -74,7 +75,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   const preferences = userPreferences || defaultPreferences;
 
   const { data: apiProperties } = useQuery({
-    queryKey: ['properties'],
+    queryKey: ["properties"],
     queryFn: getProperties,
   });
 
