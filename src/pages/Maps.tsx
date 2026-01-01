@@ -35,12 +35,10 @@ const Maps = () => {
     showHeatmap: true,
   });
 
-  const { data: apiProperties, isLoading } = useQuery({
+  const { data: properties = [] } = useQuery({
     queryKey: ["properties"],
     queryFn: getProperties,
   });
-
-  const properties = apiProperties || [];
 
   const stats = [
     {
@@ -310,8 +308,8 @@ const Maps = () => {
                 <InteractiveMap
                   language={language}
                   properties={properties}
-                  selectedPropertyId={selectedPropertyId}
-                  onPropertySelect={setSelectedPropertyId}
+                  selectedPropertyId={selectedPropertyId || undefined}
+                  onPropertySelect={(id) => setSelectedPropertyId(id)}
                   showHeatmap={mapFilters.showHeatmap}
                   filterByType={mapFilters.propertyTypes}
                   filterByPrice={mapFilters.priceRange}

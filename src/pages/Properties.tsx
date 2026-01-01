@@ -3,7 +3,6 @@ import Navigation from "@/components/Navigation";
 import SearchBar from "@/components/SearchBar";
 import PropertyCard from "@/components/PropertyCard";
 import { getProperties } from "@/lib/api";
-import { MOCK_PROPERTIES } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -45,8 +44,8 @@ const Properties = () => {
     queryFn: getProperties,
   });
 
-  // Use properties data from API or constants
-  const properties = apiProperties || MOCK_PROPERTIES;
+  // Use properties data from API
+  const properties = apiProperties || [];
 
   const quickFilters = [
     {

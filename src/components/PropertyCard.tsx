@@ -127,18 +127,61 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           </div>
 
           {/* Favorite Button */}
-          <button
-            onClick={() => setIsFavorited(!isFavorited)}
-            className="absolute top-3 right-12 p-2 bg-black/60 backdrop-blur-sm rounded-lg hover:bg-black/80 transition-all duration-300"
-          >
-            <Heart
-              className={`h-4 w-4 transition-all duration-300 ${
-                isFavorited
-                  ? "fill-red-500 text-red-500"
-                  : "text-white hover:text-red-400"
-              }`}
-            />
-          </button>
+          <div className="absolute top-3 right-12 flex space-x-2 rtl:space-x-reverse">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="p-2 bg-black/60 backdrop-blur-sm rounded-lg hover:bg-black/80 transition-all duration-300 text-white hover:text-gold-400">
+                  <Share2 className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="bg-slate-900 border-slate-700"
+              >
+                <DropdownMenuItem
+                  onClick={() => handleShare("whatsapp")}
+                  className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                >
+                  <MessageCircle className="h-4 w-4 mr-2 text-green-500" />
+                  WhatsApp
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleShare("facebook")}
+                  className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                >
+                  <Facebook className="h-4 w-4 mr-2 text-blue-600" />
+                  Facebook
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleShare("twitter")}
+                  className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                >
+                  <Twitter className="h-4 w-4 mr-2 text-blue-400" />
+                  Twitter
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleShare("telegram")}
+                  className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                >
+                  <Send className="h-4 w-4 mr-2 text-sky-500" />
+                  Telegram
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <button
+              onClick={() => setIsFavorited(!isFavorited)}
+              className="p-2 bg-black/60 backdrop-blur-sm rounded-lg hover:bg-black/80 transition-all duration-300"
+            >
+              <Heart
+                className={`h-4 w-4 transition-all duration-300 ${
+                  isFavorited
+                    ? "fill-red-500 text-red-500"
+                    : "text-white hover:text-red-400"
+                }`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Enhanced Price Tag */}
