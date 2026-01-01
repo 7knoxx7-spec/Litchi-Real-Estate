@@ -16,109 +16,6 @@ dotenv.config();
 
 const app = express();
 const prisma = new PrismaClient();
-// Chat / Conversations
-app.get("/api/conversations", authenticateToken, async (req: any, res) => {
-  try {
-    const conversations = await prisma.conversation.findMany({
-      where: { participants: { some: { id: req.user.id } } },
-      include: {
-        participants: {
-          select: { id: true, name: true, avatar: true },
-        },
-        messages: {
-          orderBy: { createdAt: "desc" },
-          take: 1,
-        },
-      },
-      orderBy: { updatedAt: "desc" },
-    });
-    res.json(conversations);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-app.post("/api/conversations", authenticateToken, async (req: any, res) => {
-  try {
-    let { participantId } = req.body;
-
-    if (participantId === "support") {
-      const agent = await prisma.user.findFirst({
-        where: { role: { in: ["ADMIN", "AGENT"] } },
-      });
-      if (!agent)
-        return res.status(404).json({ message: "No support agents available" });
-      participantId = agent.id;
-    }
-
-    const existing = await prisma.conversation.findFirst({
-      where: {
-        AND: [
-          { participants: { some: { id: req.user.id } } },
-          { participants: { some: { id: participantId } } },
-        ],
-      },
-    });
-
-    if (existing) return res.json(existing);
-
-    const conversation = await prisma.conversation.create({
-      data: {
-        participants: {
-          connect: [{ id: req.user.id }, { id: participantId }],
-        },
-      },
-    });
-    res.json(conversation);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-app.get(
-  "/api/conversations/:id/messages",
-  authenticateToken,
-  async (req: any, res) => {
-    try {
-      const messages = await prisma.message.findMany({
-        where: { conversationId: req.params.id },
-        orderBy: { createdAt: "asc" },
-        include: { sender: { select: { id: true, name: true, avatar: true } } },
-      });
-      res.json(messages);
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
-    }
-  },
-);
-
-app.post(
-  "/api/conversations/:id/messages",
-  authenticateToken,
-  async (req: any, res) => {
-    try {
-      const { content } = req.body;
-      const message = await prisma.message.create({
-        data: {
-          content,
-          senderId: req.user.id,
-          conversationId: req.params.id,
-        },
-        include: { sender: { select: { id: true, name: true, avatar: true } } },
-      });
-
-      await prisma.conversation.update({
-        where: { id: req.params.id },
-        data: { updatedAt: new Date() },
-      });
-
-      res.json(message);
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
-    }
-  },
-);
 
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
@@ -412,6 +309,61 @@ app.post("/api/analytics", async (req, res) => {
   }
 });
 
+app.get("/api/analytics/reports", authenticateToken, async (req: any, res) => {
+  try {
+    const totalViews = await prisma.analytics.count({
+      where: { event: "view" },
+    });
+    const totalSearches = await prisma.analytics.count({
+      where: { event: "search" },
+    });
+
+    const topProperties = await prisma.analytics.groupBy({
+      by: ["propertyId"],
+      where: { event: "view", propertyId: { not: null } },
+      _count: { event: true },
+      orderBy: { _count: { event: "desc" } },
+      take: 5,
+    });
+
+    res.json({ totalViews, totalSearches, topProperties });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/api/analytics/export", authenticateToken, async (req: any, res) => {
+  try {
+    const analytics = await prisma.analytics.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 1000,
+    });
+
+    const csvRows = [
+      ["ID", "Event", "Details", "User ID", "Property ID", "Date"].join(","),
+    ];
+
+    analytics.forEach((row) => {
+      csvRows.push(
+        [
+          row.id,
+          row.event,
+          `"${row.details.replace(/"/g, '""')}"`, // Escape quotes
+          row.userId || "",
+          row.propertyId || "",
+          row.createdAt.toISOString(),
+        ].join(","),
+      );
+    });
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("analytics_report.csv");
+    res.send(csvRows.join("\n"));
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Payments
 app.post("/api/payments", authenticateToken, async (req: any, res) => {
   try {
@@ -453,6 +405,110 @@ app.get("/api/properties/:id", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+// Chat / Conversations
+app.get("/api/conversations", authenticateToken, async (req: any, res) => {
+  try {
+    const conversations = await prisma.conversation.findMany({
+      where: { participants: { some: { id: req.user.id } } },
+      include: {
+        participants: {
+          select: { id: true, name: true, avatar: true },
+        },
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+    res.json(conversations);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/api/conversations", authenticateToken, async (req: any, res) => {
+  try {
+    let { participantId } = req.body;
+
+    if (participantId === "support") {
+      const agent = await prisma.user.findFirst({
+        where: { role: { in: ["ADMIN", "AGENT"] } },
+      });
+      if (!agent)
+        return res.status(404).json({ message: "No support agents available" });
+      participantId = agent.id;
+    }
+
+    const existing = await prisma.conversation.findFirst({
+      where: {
+        AND: [
+          { participants: { some: { id: req.user.id } } },
+          { participants: { some: { id: participantId } } },
+        ],
+      },
+    });
+
+    if (existing) return res.json(existing);
+
+    const conversation = await prisma.conversation.create({
+      data: {
+        participants: {
+          connect: [{ id: req.user.id }, { id: participantId }],
+        },
+      },
+    });
+    res.json(conversation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get(
+  "/api/conversations/:id/messages",
+  authenticateToken,
+  async (req: any, res) => {
+    try {
+      const messages = await prisma.message.findMany({
+        where: { conversationId: req.params.id },
+        orderBy: { createdAt: "asc" },
+        include: { sender: { select: { id: true, name: true, avatar: true } } },
+      });
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
+
+app.post(
+  "/api/conversations/:id/messages",
+  authenticateToken,
+  async (req: any, res) => {
+    try {
+      const { content } = req.body;
+      const message = await prisma.message.create({
+        data: {
+          content,
+          senderId: req.user.id,
+          conversationId: req.params.id,
+        },
+        include: { sender: { select: { id: true, name: true, avatar: true } } },
+      });
+
+      await prisma.conversation.update({
+        where: { id: req.params.id },
+        data: { updatedAt: new Date() },
+      });
+
+      res.json(message);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
 
 // Start Server
 if (process.env.NODE_ENV !== "test") {

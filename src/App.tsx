@@ -14,6 +14,7 @@ import AdamChat from "./pages/AdamChat";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import { ChatSupport } from "@/components/ChatSupport";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ChatSupport />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
