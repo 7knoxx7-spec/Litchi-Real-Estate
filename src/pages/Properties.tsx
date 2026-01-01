@@ -131,7 +131,7 @@ const Properties = () => {
             </div>
 
             {/* Search Bar */}
-            <SearchBar language={language} compact />
+            <SearchBar language={language} compact onSearch={handleSearch} />
           </div>
         </div>
       </section>
