@@ -8,7 +8,7 @@ import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-const multer = require("multer");
+import multer from "multer";
 import path from "path";
 import fs from "fs";
 
