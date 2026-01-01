@@ -495,6 +495,58 @@ app.get("/api/properties/:id", async (req, res) => {
   }
 });
 
+// Social Sharing (OG Tags)
+app.get("/api/share/:id", async (req, res) => {
+  try {
+    const property = await prisma.property.findUnique({
+      where: { id: req.params.id },
+    });
+
+    if (!property) return res.status(404).send("Property not found");
+
+    const images = JSON.parse(property.images);
+    const location = JSON.parse(property.location);
+    const title = property.title;
+    const description = `Check out this amazing property in ${location.city} for ${property.price} AED!`;
+    const image = images[0] || "https://room-pro-adam.com/placeholder.jpg";
+    // In production, this would be the actual domain
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:8080";
+    const url = `${frontendUrl}/properties/${property.id}`;
+
+    const html = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${title}</title>
+        <meta property="og:title" content="${title}" />
+        <meta property="og:description" content="${description}" />
+        <meta property="og:image" content="${image}" />
+        <meta property="og:url" content="${url}" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="${title}" />
+        <meta name="twitter:description" content="${description}" />
+        <meta name="twitter:image" content="${image}" />
+        <script>
+          window.location.href = "${url}";
+        </script>
+      </head>
+      <body>
+        <h1>Redirecting...</h1>
+        <p>If you are not redirected automatically, <a href="${url}">click here</a>.</p>
+      </body>
+      </html>
+    `;
+
+    res.send(html);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+
 // Chat / Conversations
 app.get("/api/conversations", authenticateToken, async (req: any, res) => {
   try {

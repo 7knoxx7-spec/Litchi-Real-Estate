@@ -53,6 +53,31 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [isFavorited, setIsFavorited] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const handleShare = (platform: string) => {
+    const shareUrl = `http://localhost:3000/api/share/${property.id}`;
+    const text = `Check out this property: ${property.title}`;
+    let url = "";
+
+    switch (platform) {
+      case "whatsapp":
+        url = `https://wa.me/?text=${encodeURIComponent(text + " " + shareUrl)}`;
+        break;
+      case "facebook":
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        break;
+      case "twitter":
+        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+        break;
+      case "telegram":
+        url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`;
+        break;
+    }
+
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
   const formatPrice = (price: number, type: string) => {
     const formatted = new Intl.NumberFormat("en-AE", {
       style: "currency",
