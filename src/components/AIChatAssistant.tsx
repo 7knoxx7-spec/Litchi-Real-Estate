@@ -59,8 +59,8 @@ const AIChatAssistant: React.FC<AIChatAssistantProps> = ({
       id: "welcome",
       content:
         language === "ar"
-          ? `مرحباً ${userContext?.name || ""}! أنا مساعدك الذكي في RoomUAE PRO. كيف يمكنني مساعدتك اليوم في العثور على السكن المثالي؟`
-          : `Hello ${userContext?.name || ""}! I'm your AI assistant at RoomUAE PRO. How can I help you find the perfect accommodation today?`,
+          ? `مرحباً ${userContext?.name || ""}! أنا مساعدك الذكي في ليتشي العقارية. كيف يمكنني مساعدتك اليوم في العثور على السكن المثالي؟`
+          : `Hello ${userContext?.name || ""}! I'm your AI assistant at Litchi Real Estate. How can I help you find the perfect accommodation today?`,
       sender: "ai",
       timestamp: new Date(),
       suggestions:

@@ -17,7 +17,17 @@ import {
   Car,
   Dumbbell,
   Waves,
+  Share2,
+  Facebook,
+  Twitter,
+  Send,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PropertyCardProps {
   property: {
@@ -54,7 +64,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleShare = (platform: string) => {
-    const shareUrl = `http://localhost:3000/api/share/${property.id}`;
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const shareUrl = `${origin}/api/share/${property.id}`;
     const text = `Check out this property: ${property.title}`;
     let url = "";
 

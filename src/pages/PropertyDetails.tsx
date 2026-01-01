@@ -69,7 +69,8 @@ const PropertyDetails = () => {
       : property.features || [];
 
   const handleShare = (platform: string) => {
-    const shareUrl = `http://localhost:3000/api/share/${property.id}`;
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const shareUrl = `${origin}/api/share/${property.id}`;
     const text = `Check out this property: ${property.title}`;
     let url = "";
 
@@ -146,20 +147,35 @@ const PropertyDetails = () => {
                           {language === "ar" ? "مشاركة" : "Share"}
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="bg-slate-900 border-slate-700">
-                        <DropdownMenuItem onClick={() => handleShare("whatsapp")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                      <DropdownMenuContent
+                        align="end"
+                        className="bg-slate-900 border-slate-700"
+                      >
+                        <DropdownMenuItem
+                          onClick={() => handleShare("whatsapp")}
+                          className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                        >
                           <MessageCircle className="h-4 w-4 mr-2 text-green-500" />
                           WhatsApp
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleShare("facebook")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                        <DropdownMenuItem
+                          onClick={() => handleShare("facebook")}
+                          className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                        >
                           <Facebook className="h-4 w-4 mr-2 text-blue-600" />
                           Facebook
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleShare("twitter")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                        <DropdownMenuItem
+                          onClick={() => handleShare("twitter")}
+                          className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                        >
                           <Twitter className="h-4 w-4 mr-2 text-blue-400" />
                           Twitter
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleShare("telegram")} className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                        <DropdownMenuItem
+                          onClick={() => handleShare("telegram")}
+                          className="text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
+                        >
                           <Send className="h-4 w-4 mr-2 text-sky-500" />
                           Telegram
                         </DropdownMenuItem>

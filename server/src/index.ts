@@ -8,7 +8,7 @@ import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import multer from "multer";
+const multer = require("multer");
 import path from "path";
 import fs from "fs";
 
@@ -28,10 +28,10 @@ if (!fs.existsSync(uploadDir)) {
 
 // File Upload Configuration
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req: any, file: any, cb: any) => {
     cb(null, uploadDir);
   },
-  filename: (req, file, cb) => {
+  filename: (req: any, file: any, cb: any) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
   },
@@ -42,7 +42,7 @@ const upload = multer({
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB limit
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req: any, file: any, cb: any) => {
     const allowedTypes = /jpeg|jpg|png|webp/;
     const extname = allowedTypes.test(
       path.extname(file.originalname).toLowerCase(),
@@ -108,7 +108,7 @@ const authenticateToken = (req: any, res: any, next: any) => {
 // Routes
 
 // Auth
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/auth/login", async (req: any, res: any) => {
   const { email, password } = req.body;
   try {
     const user = await prisma.user.findUnique({ where: { email } });
@@ -138,38 +138,42 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
-app.post("/api/auth/register", validate(registerSchema), async (req, res) => {
-  const { email, password, name } = req.body;
-  try {
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser)
-      return res.status(400).json({ message: "User already exists" });
+app.post(
+  "/api/auth/register",
+  validate(registerSchema),
+  async (req: any, res: any) => {
+    const { email, password, name } = req.body;
+    try {
+      const existingUser = await prisma.user.findUnique({ where: { email } });
+      if (existingUser)
+        return res.status(400).json({ message: "User already exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: { email, password: hashedPassword, name },
-    });
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await prisma.user.create({
+        data: { email, password: hashedPassword, name },
+      });
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      JWT_SECRET,
-      { expiresIn: "1d" },
-    );
-    res.json({
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
+      const token = jwt.sign(
+        { id: user.id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: "1d" },
+      );
+      res.json({
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
 
-app.get("/api/auth/me", authenticateToken, async (req: any, res) => {
+app.get("/api/auth/me", authenticateToken, async (req: any, res: any) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
@@ -200,7 +204,7 @@ app.get("/api/auth/me", authenticateToken, async (req: any, res) => {
   }
 });
 
-app.put("/api/auth/profile", authenticateToken, async (req: any, res) => {
+app.put("/api/auth/profile", authenticateToken, async (req: any, res: any) => {
   try {
     const { name, email, avatar } = req.body;
     const user = await prisma.user.update({
@@ -213,7 +217,7 @@ app.put("/api/auth/profile", authenticateToken, async (req: any, res) => {
   }
 });
 
-app.put("/api/auth/password", authenticateToken, async (req: any, res) => {
+app.put("/api/auth/password", authenticateToken, async (req: any, res: any) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const user = await prisma.user.findUnique({ where: { id: req.user.id } });
@@ -235,7 +239,7 @@ app.put("/api/auth/password", authenticateToken, async (req: any, res) => {
 });
 
 // Upload Endpoint
-app.post("/api/upload", authenticateToken, (req, res) => {
+app.post("/api/upload", authenticateToken, (req: any, res: any) => {
   upload.single("image")(req, res, (err: any) => {
     if (err instanceof multer.MulterError) {
       return res
@@ -257,7 +261,7 @@ app.post("/api/upload", authenticateToken, (req, res) => {
 });
 
 // Properties
-app.get("/api/properties/trending", async (req, res) => {
+app.get("/api/properties/trending", async (req: any, res: any) => {
   try {
     const properties = await prisma.property.findMany({
       take: 5,
@@ -276,7 +280,7 @@ app.get("/api/properties/trending", async (req, res) => {
   }
 });
 
-app.get("/api/properties/recommendations", async (req, res) => {
+app.get("/api/properties/recommendations", async (req: any, res: any) => {
   try {
     const properties = await prisma.property.findMany({
       take: 5,
@@ -295,7 +299,7 @@ app.get("/api/properties/recommendations", async (req, res) => {
   }
 });
 
-app.get("/api/properties", async (req, res) => {
+app.get("/api/properties", async (req: any, res: any) => {
   try {
     const { minPrice, maxPrice, type, bedrooms } = req.query;
 
@@ -328,7 +332,7 @@ app.get("/api/properties", async (req, res) => {
 });
 
 // Favorites
-app.get("/api/favorites", authenticateToken, async (req: any, res) => {
+app.get("/api/favorites", authenticateToken, async (req: any, res: any) => {
   try {
     const favorites = await prisma.favorite.findMany({
       where: { userId: req.user.id },
@@ -355,7 +359,7 @@ app.get("/api/favorites", authenticateToken, async (req: any, res) => {
   }
 });
 
-app.post("/api/favorites", authenticateToken, async (req: any, res) => {
+app.post("/api/favorites", authenticateToken, async (req: any, res: any) => {
   try {
     const { propertyId } = req.body;
     await prisma.favorite.upsert({
@@ -372,7 +376,7 @@ app.post("/api/favorites", authenticateToken, async (req: any, res) => {
 app.delete(
   "/api/favorites/:propertyId",
   authenticateToken,
-  async (req: any, res) => {
+  async (req: any, res: any) => {
     try {
       await prisma.favorite.delete({
         where: {
@@ -389,7 +393,7 @@ app.delete(
   },
 );
 // Notifications
-app.get("/api/notifications", authenticateToken, async (req: any, res) => {
+app.get("/api/notifications", authenticateToken, async (req: any, res: any) => {
   try {
     const notifications = await prisma.notification.findMany({
       where: { userId: req.user.id },
@@ -402,7 +406,7 @@ app.get("/api/notifications", authenticateToken, async (req: any, res) => {
 });
 
 // Analytics
-app.post("/api/analytics", async (req, res) => {
+app.post("/api/analytics", async (req: Request, res: Response) => {
   try {
     const { event, details, userId, propertyId } = req.body;
     await prisma.analytics.create({
@@ -419,63 +423,71 @@ app.post("/api/analytics", async (req, res) => {
   }
 });
 
-app.get("/api/analytics/reports", authenticateToken, async (req: any, res) => {
-  try {
-    const totalViews = await prisma.analytics.count({
-      where: { event: "view" },
-    });
-    const totalSearches = await prisma.analytics.count({
-      where: { event: "search" },
-    });
+app.get(
+  "/api/analytics/reports",
+  authenticateToken,
+  async (req: any, res: any) => {
+    try {
+      const totalViews = await prisma.analytics.count({
+        where: { event: "view" },
+      });
+      const totalSearches = await prisma.analytics.count({
+        where: { event: "search" },
+      });
 
-    const topProperties = await prisma.analytics.groupBy({
-      by: ["propertyId"],
-      where: { event: "view", propertyId: { not: null } },
-      _count: { event: true },
-      orderBy: { _count: { event: "desc" } },
-      take: 5,
-    });
+      const topProperties = await prisma.analytics.groupBy({
+        by: ["propertyId"],
+        where: { event: "view", propertyId: { not: null } },
+        _count: { event: true },
+        orderBy: { _count: { event: "desc" } },
+        take: 5,
+      });
 
-    res.json({ totalViews, totalSearches, topProperties });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
+      res.json({ totalViews, totalSearches, topProperties });
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
 
-app.get("/api/analytics/export", authenticateToken, async (req: any, res) => {
-  try {
-    const analytics = await prisma.analytics.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 1000,
-    });
+app.get(
+  "/api/analytics/export",
+  authenticateToken,
+  async (req: any, res: any) => {
+    try {
+      const analytics = await prisma.analytics.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 1000,
+      });
 
-    const csvRows = [
-      ["ID", "Event", "Details", "User ID", "Property ID", "Date"].join(","),
-    ];
+      const csvRows = [
+        ["ID", "Event", "Details", "User ID", "Property ID", "Date"].join(","),
+      ];
 
-    analytics.forEach((row) => {
-      csvRows.push(
-        [
-          row.id,
-          row.event,
-          `"${row.details.replace(/"/g, '""')}"`, // Escape quotes
-          row.userId || "",
-          row.propertyId || "",
-          row.createdAt.toISOString(),
-        ].join(","),
-      );
-    });
+      analytics.forEach((row) => {
+        csvRows.push(
+          [
+            row.id,
+            row.event,
+            `"${row.details?.replace(/"/g, '""') || ""}"`,
+            row.userId || "",
+            row.propertyId || "",
+            row.createdAt.toISOString(),
+          ].join(","),
+        );
+      });
 
-    res.header("Content-Type", "text/csv");
-    res.attachment("analytics_report.csv");
-    res.send(csvRows.join("\n"));
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
+      res.header("Content-Type", "text/csv");
+      res.attachment("analytics_report.csv");
+      res.send(csvRows.join("\n"));
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
 
 // Payments
-app.post("/api/payments", authenticateToken, async (req: any, res) => {
+app.post("/api/payments", authenticateToken, async (req: any, res: any) => {
   try {
     const { amount, propertyId } = req.body;
     const payment = await prisma.payment.create({
@@ -495,7 +507,7 @@ app.post("/api/payments", authenticateToken, async (req: any, res) => {
 });
 
 // Reviews
-app.get("/api/properties/:id/reviews", async (req, res) => {
+app.get("/api/properties/:id/reviews", async (req: any, res: any) => {
   try {
     const reviews = await prisma.review.findMany({
       where: { propertyId: req.params.id },
@@ -513,7 +525,7 @@ app.get("/api/properties/:id/reviews", async (req, res) => {
 app.post(
   "/api/properties/:id/reviews",
   authenticateToken,
-  async (req: any, res) => {
+  async (req: any, res: any) => {
     try {
       const { rating, comment } = req.body;
       const review = await prisma.review.create({
@@ -534,7 +546,7 @@ app.post(
   },
 );
 
-app.get("/api/properties/:id", async (req, res) => {
+app.get("/api/properties/:id", async (req: any, res: any) => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: req.params.id },
@@ -566,7 +578,7 @@ app.get("/api/properties/:id", async (req, res) => {
 });
 
 // Social Sharing (OG Tags)
-app.get("/api/share/:id", async (req, res) => {
+app.get("/api/share/:id", async (req: any, res: any) => {
   try {
     const property = await prisma.property.findUnique({
       where: { id: req.params.id },
@@ -618,7 +630,7 @@ app.get("/api/share/:id", async (req, res) => {
 });
 
 // Chat / Conversations
-app.get("/api/conversations", authenticateToken, async (req: any, res) => {
+app.get("/api/conversations", authenticateToken, async (req: any, res: any) => {
   try {
     const conversations = await prisma.conversation.findMany({
       where: { participants: { some: { id: req.user.id } } },
@@ -639,48 +651,54 @@ app.get("/api/conversations", authenticateToken, async (req: any, res) => {
   }
 });
 
-app.post("/api/conversations", authenticateToken, async (req: any, res) => {
-  try {
-    let { participantId } = req.body;
+app.post(
+  "/api/conversations",
+  authenticateToken,
+  async (req: any, res: any) => {
+    try {
+      let { participantId } = req.body;
 
-    if (participantId === "support") {
-      const agent = await prisma.user.findFirst({
-        where: { role: { in: ["ADMIN", "AGENT"] } },
-      });
-      if (!agent)
-        return res.status(404).json({ message: "No support agents available" });
-      participantId = agent.id;
-    }
+      if (participantId === "support") {
+        const agent = await prisma.user.findFirst({
+          where: { role: { in: ["ADMIN", "AGENT"] } },
+        });
+        if (!agent)
+          return res
+            .status(404)
+            .json({ message: "No support agents available" });
+        participantId = agent.id;
+      }
 
-    const existing = await prisma.conversation.findFirst({
-      where: {
-        AND: [
-          { participants: { some: { id: req.user.id } } },
-          { participants: { some: { id: participantId } } },
-        ],
-      },
-    });
-
-    if (existing) return res.json(existing);
-
-    const conversation = await prisma.conversation.create({
-      data: {
-        participants: {
-          connect: [{ id: req.user.id }, { id: participantId }],
+      const existing = await prisma.conversation.findFirst({
+        where: {
+          AND: [
+            { participants: { some: { id: req.user.id } } },
+            { participants: { some: { id: participantId } } },
+          ],
         },
-      },
-    });
-    res.json(conversation);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+      });
+
+      if (existing) return res.json(existing);
+
+      const conversation = await prisma.conversation.create({
+        data: {
+          participants: {
+            connect: [{ id: req.user.id }, { id: participantId }],
+          },
+        },
+      });
+      res.json(conversation);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+);
 
 app.get(
   "/api/conversations/:id/messages",
   authenticateToken,
-  async (req: any, res) => {
+  async (req: any, res: any) => {
     try {
       const messages = await prisma.message.findMany({
         where: { conversationId: req.params.id },
@@ -697,7 +715,7 @@ app.get(
 app.post(
   "/api/conversations/:id/messages",
   authenticateToken,
-  async (req: any, res) => {
+  async (req: any, res: any) => {
     try {
       const { content } = req.body;
       const message = await prisma.message.create({

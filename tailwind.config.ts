@@ -62,7 +62,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // RoomUAE PRO Brand Colors - Dark Urban Elegance
+        // Litchi Real Estate Brand Colors
         brand: {
           50: "#f8fafc",
           100: "#f1f5f9",
