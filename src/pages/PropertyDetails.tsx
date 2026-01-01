@@ -18,7 +18,7 @@ import {
   Heart,
   CheckCircle,
   Calendar,
-  Eye
+  Eye,
 } from "lucide-react";
 
 const PropertyDetails = () => {
@@ -33,33 +33,52 @@ const PropertyDetails = () => {
     },
   });
 
-  if (isLoading) return <div className="min-h-screen bg-background flex items-center justify-center">Loading...</div>;
-  if (!property) return <div className="min-h-screen bg-background flex items-center justify-center">Property not found</div>;
+  if (isLoading)
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  if (!property)
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        Property not found
+      </div>
+    );
 
-  const parsedLocation = typeof property.location === 'string' ? JSON.parse(property.location) : property.location;
-  const parsedImages = typeof property.images === 'string' ? JSON.parse(property.images) : property.images;
-  const parsedFeatures = typeof property.features === 'string' ? JSON.parse(property.features) : property.features || [];
+  const parsedLocation =
+    typeof property.location === "string"
+      ? JSON.parse(property.location)
+      : property.location;
+  const parsedImages =
+    typeof property.images === "string"
+      ? JSON.parse(property.images)
+      : property.images;
+  const parsedFeatures =
+    typeof property.features === "string"
+      ? JSON.parse(property.features)
+      : property.features || [];
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar language={language} />
-      
+      <Navigation />
+
       <main className="container mx-auto px-4 pt-24 pb-12">
         {/* Image Gallery */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 h-[500px]">
           <div className="md:col-span-1 h-full">
-            <img 
-              src={parsedImages[0]} 
-              alt={property.title} 
+            <img
+              src={parsedImages[0]}
+              alt={property.title}
               className="w-full h-full object-cover rounded-xl"
             />
           </div>
           <div className="grid grid-cols-2 gap-4 h-full">
             {parsedImages.slice(1, 5).map((img: string, idx: number) => (
-              <img 
-                key={idx} 
-                src={img} 
-                alt={`${property.title} ${idx+2}`} 
+              <img
+                key={idx}
+                src={img}
+                alt={`${property.title} ${idx + 2}`}
                 className="w-full h-full object-cover rounded-xl"
               />
             ))}
@@ -91,11 +110,15 @@ const PropertyDetails = () => {
               <div className="flex gap-6 py-6 border-y border-border">
                 <div className="flex items-center gap-2">
                   <Bed className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">{property.bedrooms} Beds</span>
+                  <span className="font-semibold">
+                    {property.bedrooms} Beds
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Bath className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">{property.bathrooms} Baths</span>
+                  <span className="font-semibold">
+                    {property.bathrooms} Baths
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Square className="h-5 w-5 text-primary" />
@@ -131,17 +154,23 @@ const PropertyDetails = () => {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-6">
-                  <img 
-                    src={property.agent?.avatar || "https://github.com/shadcn.png"} 
-                    alt={property.agent?.name} 
+                  <img
+                    src={
+                      property.agent?.avatar || "https://github.com/shadcn.png"
+                    }
+                    alt={property.agent?.name}
                     className="w-16 h-16 rounded-full"
                   />
                   <div>
-                    <h3 className="font-bold text-lg">{property.agent?.name || "Agent"}</h3>
-                    <p className="text-sm text-muted-foreground">Licensed Real Estate Agent</p>
+                    <h3 className="font-bold text-lg">
+                      {property.agent?.name || "Agent"}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Licensed Real Estate Agent
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="space-y-3">
                   <Button className="w-full" size="lg">
                     <Phone className="mr-2 h-4 w-4" /> Call Agent
