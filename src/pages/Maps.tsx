@@ -35,10 +35,17 @@ const Maps = () => {
     showHeatmap: true,
   });
 
+  const { data: apiProperties, isLoading } = useQuery({
+    queryKey: ["properties"],
+    queryFn: getProperties,
+  });
+
+  const properties = apiProperties || [];
+
   const stats = [
     {
       title: language === "ar" ? "العقارات المعروضة" : "Properties Shown",
-      value: MOCK_PROPERTIES.length.toString(),
+      value: properties.length.toString(),
       icon: Building2,
       color: "text-emerald-400",
       bgColor: "bg-emerald-400/20",
