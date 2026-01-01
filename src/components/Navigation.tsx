@@ -32,6 +32,15 @@ const Navigation = () => {
   const [notificationCount, setNotificationCount] = useState(4);
   const location = useLocation();
 
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
+
   // Initialize dark mode
   useEffect(() => {
     document.documentElement.classList.add("dark");
