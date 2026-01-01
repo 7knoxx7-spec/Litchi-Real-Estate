@@ -211,7 +211,7 @@ app.get("/api/properties/trending", async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
       take: 5,
-      orderBy: { price: 'desc' }, // Mock trending logic
+      orderBy: { views: 'desc' }, // Real trending logic based on views
       include: { agent: { select: { id: true, name: true, avatar: true } } }
     });
     const formatted = properties.map(p => ({
