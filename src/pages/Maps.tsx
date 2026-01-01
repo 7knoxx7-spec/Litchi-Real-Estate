@@ -301,7 +301,7 @@ const Maps = () => {
               <TabsContent value="map" className="mt-8">
                 <InteractiveMap
                   language={language}
-                  properties={MOCK_PROPERTIES}
+                  properties={properties}
                   selectedPropertyId={selectedPropertyId}
                   onPropertySelect={setSelectedPropertyId}
                   showHeatmap={mapFilters.showHeatmap}

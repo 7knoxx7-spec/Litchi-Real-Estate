@@ -72,7 +72,7 @@ interface InteractiveMapProps {
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({
   language = "ar",
-  properties = MOCK_PROPERTIES,
+  properties = [],
   selectedPropertyId,
   onPropertySelect,
   showHeatmap = true,

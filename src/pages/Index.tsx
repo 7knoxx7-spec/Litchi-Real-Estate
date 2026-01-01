@@ -64,9 +64,16 @@ const Index = () => {
     setShowDreamDiscovery(true);
   };
 
-  // Get featured properties from constants
-  const featuredProperties = MOCK_PROPERTIES.filter(
-    (property) => property.featured,
+  const { data: apiProperties } = useQuery({
+    queryKey: ['properties'],
+    queryFn: getProperties,
+  });
+
+  const properties = apiProperties || MOCK_PROPERTIES;
+
+  // Get featured properties
+  const featuredProperties = properties.filter(
+    (property: any) => property.featured,
   ).slice(0, 3);
 
   // Convert constants to component format

@@ -73,9 +73,16 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
   const preferences = userPreferences || defaultPreferences;
 
+  const { data: apiProperties } = useQuery({
+    queryKey: ['properties'],
+    queryFn: getProperties,
+  });
+
+  const properties = apiProperties || MOCK_PROPERTIES;
+
   useEffect(() => {
     generateRecommendations();
-  }, [preferences]);
+  }, [preferences, properties]);
 
   const generateRecommendations = async () => {
     setIsAnalyzing(true);
@@ -84,7 +91,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
     // Simulate AI analysis delay
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const analyzed = analyzeProperties(MOCK_PROPERTIES, preferences);
+    const analyzed = analyzeProperties(properties, preferences);
     setRecommendations(analyzed);
     setIsAnalyzing(false);
     setAnalysisComplete(true);
