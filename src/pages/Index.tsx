@@ -130,30 +130,30 @@ const Index = () => {
             <div className="text-center max-w-5xl mx-auto space-y-12">
               {/* Main Heading */}
               <div className="space-y-6 animate-fade-in-up">
-                <Badge className="bg-gradient-to-r from-gold-500/30 to-emerald-500/30 text-gold-300 border-gold-400/50 text-lg px-8 py-3 shadow-lg shadow-gold-400/20 animate-bounce-in luxury-hover">
+                <Badge className="bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-300 border-purple-400/50 text-lg px-8 py-3 shadow-lg shadow-purple-400/20 animate-bounce-in luxury-hover">
                   {language === "ar"
-                    ? "🏆 المنصة الرائدة في الإمارات"
-                    : "🏆 #1 Platform in UAE"}
+                    ? "🏆 ليتشي العقارية - المنصة الشاملة"
+                    : "🏆 Litchi Real Estate - Complete Platform"}
                 </Badge>
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-black gradient-text leading-tight text-glow">
                   {language === "ar" ? (
                     <>
-                      اكتشف منزل
+                      اكتشف سكنك
                       <br />
-                      <span className="animate-glow">أحلامك في الإمارات</span>
+                      <span className="animate-glow">المثالي في الإمارات</span>
                     </>
                   ) : (
                     <>
                       Discover Your
                       <br />
-                      <span className="animate-glow">Dream Home in UAE</span>
+                      <span className="animate-glow">Perfect Housing in UAE</span>
                     </>
                   )}
                 </h1>
                 <p className="text-xl md:text-2xl lg:text-3xl text-slate-200 max-w-4xl mx-auto leading-relaxed font-light animate-slide-in-right">
                   {language === "ar"
-                    ? "أفضل العقارات المتميزة في دولة الإمارات العربية المتحدة مع تقنيات الذكاء الاصطناعي المتطورة وأعلى معايير الأمان والجودة"
-                    : "Premium UAE properties with advanced AI technology, highest security standards, and unmatched quality"}
+                    ? "منصة شاملة لإيجاد وإدارة السكن والمشاركة في السكن المشترك، تستهدف الشباب والفتيات الباحثين عن غرف، أسرة، شقق، أو حتى فلل بمختلف الخدمات"
+                    : "A complete platform for finding and managing housing, including shared housing. It targets young adults looking for rooms, beds, apartments, or villas with various services"}
                 </p>
               </div>
 

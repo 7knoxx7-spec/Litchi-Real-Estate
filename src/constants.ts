@@ -1,9 +1,9 @@
-// RoomUAE PRO - Premium Constants & Mock Data
-// Dark Urban Elegance Theme
+// Litchi Real Estate - Comprehensive Housing Platform
+// Glassmorphism Design with Purple & Neon Theme
 
-export const APP_NAME = "RoomUAE PRO";
-export const APP_TAGLINE_AR = "عقارات الإمارات المتميزة";
-export const APP_TAGLINE_EN = "Premium UAE Properties";
+export const APP_NAME = "Litchi Real Estate";
+export const APP_TAGLINE_AR = "ليتشي العقارية";
+export const APP_TAGLINE_EN = "Litchi Real Estate";
 
 // Configuration
 export const DEFAULT_PROFILE_PIC =
@@ -391,10 +391,10 @@ export const NAV_LINKS = [
     icon: "Building2",
   },
   {
-    href: "/adam",
-    labelAr: "آدم AI",
-    labelEn: "Adam AI",
-    icon: "Crown",
+    href: "/maps",
+    labelAr: "الخرائط",
+    labelEn: "Maps",
+    icon: "Map",
     badge: "Live",
     special: true,
   },
@@ -412,27 +412,27 @@ export const NAV_LINKS = [
 // Statistics
 export const STATS = [
   {
-    value: "10,000+",
+    value: "15,000+",
     labelAr: "عقار متاح",
     labelEn: "Properties Available",
     icon: "Building2",
   },
   {
-    value: "50,000+",
-    labelAr: "عميل راضي",
-    labelEn: "Happy Clients",
+    value: "100,000+",
+    labelAr: "شاب وفتاة",
+    labelEn: "Young Adults",
     icon: "Users",
   },
   {
-    value: "5+",
-    labelAr: "سنوات خبرة",
-    labelEn: "Years Experience",
-    icon: "Award",
+    value: "7",
+    labelAr: "إمارات",
+    labelEn: "Emirates",
+    icon: "MapPin",
   },
   {
-    value: "98%",
-    labelAr: "معدل النجاح",
-    labelEn: "Success Rate",
+    value: "99%",
+    labelAr: "رضا العملاء",
+    labelEn: "Client Satisfaction",
     icon: "TrendingUp",
   },
 ];
