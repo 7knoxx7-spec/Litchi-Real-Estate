@@ -195,7 +195,29 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             </DropdownMenu>
 
             <button
-              onClick={() => setIsFavorited(!isFavorited)}
+              onClick={async () => {
+                try {
+                  if (!isFavorited) {
+                    await fetch("/api/favorites", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+                      },
+                      body: JSON.stringify({ propertyId: property.id }),
+                    });
+                    setIsFavorited(true);
+                  } else {
+                    await fetch(`/api/favorites/${property.id}`, {
+                      method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+                      },
+                    });
+                    setIsFavorited(false);
+                  }
+                } catch (e) {}
+              }}
               className="p-2 bg-black/60 backdrop-blur-sm rounded-lg hover:bg-black/80 transition-all duration-300"
             >
               <Heart
