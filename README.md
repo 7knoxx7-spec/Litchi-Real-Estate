@@ -1,188 +1,212 @@
 # 🏡 Litchi Real Estate
 
-> **Global real estate discovery, rental, booking, and investment platform** designed for young adults, students, professionals, travelers, and investors.  
-> Fully production-ready, map-driven, premium UI with Glassmorphism & Neon Purple theme.
+> **منصة عالمية لاكتشاف العقارات، الحجز، البيع، والاستثمار**، موجهة للشباب، الطلاب، المحترفين، والمسافرين.  
+> واجهة زجاجية متقدمة (Glassmorphism) مع لمسات نيون بنفسجي، تصميم فخم، سريع، وموثوق.
 
 ---
 
-## 🔥 Core Vision
+## 🔥 الرؤية الأساسية
 
-Litchi Real Estate empowers users to **search, book, buy, and sell properties globally**, offering a modern, trustworthy, and visual experience.  
-Our mission is to provide **fast, intuitive, and youth-focused real estate discovery anywhere in the world**.
+ليتشي للعقارات تهدف إلى **تقديم تجربة عقارية شاملة ومتكاملة**، مع التركيز على الحداثة، السرعة، الثقة، والتفاعلية. المنصة توفر:
 
-### Key Goals
-- 🌍 Global listings (UAE, Europe, USA, Asia…)
-- ✅ Verified properties only (license & authority checks)
-- ⏱️ Live availability for bookings
-- 🤖 AI-powered recommendations
-- 📊 Investor dashboards & analytics
-- 🌐 Multi-language (Arabic + English)
+- 🌍 عقارات عالمية (UAE, Europe, USA, Asia…)
+- ✅ عقارات موثقة فقط (License & Authority Verified)
+- ⏱️ حجز مباشر مع تحديث الحالة فوراً
+- 🤖 توصيات ذكية حسب سلوك المستخدم والموقع والميزانية
+- 📊 لوحات استثمارية وتحليلات متقدمة
+- 🌐 دعم متعدد اللغات (عربي + إنجليزي)
 
 ---
 
 ## 💻 Tech Stack
 
 ### Frontend
-- React + Vite + TypeScript  
-- TailwindCSS (Glassmorphism / Neon Purple / Premium UI)  
-- Mobile-first responsive design  
-- State management: Zustand / Redux Toolkit  
-- Data fetching: React Query (TanStack Query)  
-- i18n ready (Arabic + English, extendable)
+- React + Vite + TypeScript
+- TailwindCSS مع Glassmorphism وNeon Purple
+- تصميم Mobile-First
+- State Management: Zustand / Redux Toolkit
+- Data Fetching: React Query (TanStack Query)
+- i18n جاهز (Arabic + English)
 
 ### Backend
-- Node.js 18+ with Fastify  
-- TypeScript  
-- PostgreSQL + PostGIS (geospatial queries)  
-- Prisma ORM  
-- Redis (cache & queues)  
-- Background workers: BullMQ  
-- WebSockets for real-time chat & notifications
+- Node.js 18+ + Fastify
+- TypeScript
+- PostgreSQL + PostGIS (Geospatial Queries)
+- Prisma ORM
+- Redis (Cache + Queues)
+- BullMQ Background Workers
+- WebSockets للـ Real-Time Chat
 
 ### Maps & Geo
-- Mapbox GL JS or Leaflet + OpenStreetMap  
-- Real geospatial search (radius, polygon, distance)  
-- Clustering, draw-to-search, geolocation, directions
+- Mapbox GL JS أو Leaflet + OpenStreetMap
+- بحث جغرافي حقيقي (Radius, Polygon, Distance)
+- Clustering و Draw-to-Search
+- Geolocation و Directions
 
 ### Infrastructure
-- Docker + docker-compose  
-- CI/CD ready  
-- Environment variables with secure secrets handling
+- Docker + docker-compose
+- CI/CD جاهز
+- إدارة Environment Variables & Secrets آمنة
 
 ---
 
 ## 🏷️ Core Features
 
-### 1️⃣ Global Property Search
-- Worldwide search by city, area, or country  
-- Filters:
-  - Price, property type, rooms/beds  
-  - Furnished/unfurnished  
-  - Amenities  
-  - Distance from transport  
-  - Youth-friendly / family-friendly  
-- Live search results synced with map
+### 1️⃣ البحث العالمي عن العقارات
+- البحث بأي دولة، مدينة، أو منطقة
+- فلاتر متقدمة:
+  - السعر، نوع العقار، عدد الغرف/الأسرة
+  - مفروش / غير مفروش
+  - المرافق والخدمات
+  - المسافة من وسائل النقل
+  - ملائم للشباب / العائلات
+- نتائج مباشرة متزامنة مع الخريطة
 
-### 2️⃣ Interactive Map
-- Real-time property pins  
-- Clustering on zoom out  
-- Click for preview card (image, price, CTA)  
-- Draw-to-search support (circle or polygon)  
-- Geolocation & directions
+### 2️⃣ تجربة الخريطة التفاعلية
+- عقارات على شكل Pins حقيقية
+- Clustering عند التكبير / التصغير
+- معاينة العقار بالنقر: صور، السعر، CTA
+- Draw-to-Search: دائرة أو شكل متعدد
+- دعم Geolocation وطرق الوصول
 
-### 3️⃣ Verified Listings
-- License & authority verification required  
-- Verified badge displayed  
-- Unverified properties hidden
+### 3️⃣ العقارات الموثقة Verified Listings
+- تحقق الترخيص والجهة الرسمية
+- Badge موثق يظهر بوضوح
+- العقارات غير الموثقة مخفية
 
-### 4️⃣ Pre-Booking
-- Real availability checks  
-- Booking states: pending → confirmed → completed / cancelled  
-- Secure payments & refunds
+### 4️⃣ الحجز المسبق Pre-Booking
+- فحص التوافر مباشرة
+- حالات الحجز: Pending → Confirmed → Completed / Cancelled
+- دفع آمن و Refund Logic
 
-### 5️⃣ Shared Apartments & Matching
-- Lifestyle-based matching  
-- Budget, habits, preferences  
-- Designed for students & young professionals
+### 5️⃣ الشقق المشتركة & Matching
+- مطابقة أسلوب الحياة (ميزانية، عادات، تفضيلات)
+- موجهة للطلاب والمحترفين الشباب
 
-### 6️⃣ Private Rooms / Apartments / Villas
-- Full property details: gallery, amenities, map, nearby places  
-- Verified status & booking widget
+### 6️⃣ الغرف الخاصة / الشقق / الفيلات
+- تفاصيل كاملة: معرض الصور، المرافق، الموقع، الأماكن القريبة
+- Badge موثق و Booking Widget
 
-### 7️⃣ Global Buy & Sell
-- International investment support  
-- Investor dashboards with saved properties & analytics
+### 7️⃣ البيع والشراء العالمي Global Buy & Sell
+- دعم الاستثمار الدولي
+- لوحات تحكم للمستثمرين، حفظ العقارات، Analytics
 
-### 8️⃣ User & Investor Dashboard
-- Favorites, bookings, messages, notifications  
-- Investment overview & analytics
+### 8️⃣ لوحة تحكم المستخدم & المستثمر
+- المفضلة، الحجوزات، الرسائل، الإشعارات
+- رؤية استثمارية وتحليلية
 
-### 9️⃣ Real-Time Chat
-- User ↔ Owner / Agent  
-- Booking-related conversations  
-- WebSocket-powered
+### 9️⃣ الدردشة اللحظية Real-Time Chat
+- بين المستخدم ومالك العقار أو الوكيل
+- محادثات مرتبطة بالحجوزات
+- WebSocket Powered
 
-### 🔟 AI Recommendations
-- Personalized property suggestions  
-- Based on location, budget, and past interactions
+### 🔟 توصيات ذكية AI Recommendations
+- اقتراح عقارات بناءً على:
+  - الموقع، الميزانية، السلوك السابق
 
-### 1️⃣1️⃣ Notifications
-- Price drops, new listings, booking updates, messages  
+### 1️⃣1️⃣ الإشعارات Notifications
+- انخفاض الأسعار، عقارات جديدة، تحديثات الحجوزات، رسائل
 - Push-ready architecture
 
-### 1️⃣2️⃣ Lifestyle & Neighborhood Insights
-- Restaurants, cafés, gyms, transport  
-- Youth vibe score for each area
+### 1️⃣2️⃣ معلومات عن نمط الحياة Neighborhood Insights
+- مطاعم، مقاهي، صالات رياضية، وسائل نقل
+- Youth Vibe Score لكل منطقة
 
-### 1️⃣3️⃣ Payments
-- Secure deposits & booking confirmations  
-- Refund logic with webhooks  
-- PCI DSS compliant
+### 1️⃣3️⃣ الدفع Payments
+- دفعات آمنة وتأكيدات الحجوزات
+- Refund Logic مع Webhooks
+- PCI DSS Compliant
 
-### 1️⃣4️⃣ Multi-Language
-- Arabic & English  
-- Extendable to other languages
-
----
-
-## 📄 Pages
-- Landing page  
-- Search + Map page  
-- Property details page  
-- Login / Register  
-- User dashboard  
-- Investor dashboard  
-- Messages & Chat  
-- Favorites  
-- Admin panel  
-- Legal pages (Privacy Policy, Terms & Conditions)
+### 1️⃣4️⃣ دعم متعدد اللغات Multi-Language
+- العربية + الإنجليزية
+- قابلة للإضافة بسهولة
 
 ---
 
-## 🎨 Design & Branding
-- **Style:** Glassmorphism, Neon Purple, Premium  
-- Youth-friendly & modern  
-- Every image includes:
-  - Litchi Real Estate logo  
-  - Watermarked name  
-- High-fidelity, production-ready UI  
-- Interactive animations & transitions
+## 📄 الصفحات Pages
+- صفحة رئيسية Landing Page
+- البحث + الخريطة Search + Map Page
+- تفاصيل العقار Property Details Page
+- تسجيل الدخول / التسجيل Login / Register
+- لوحة تحكم المستخدم User Dashboard
+- لوحة تحكم المستثمر Investor Dashboard
+- الرسائل Chat
+- المفضلة Favorites
+- لوحة الإدارة Admin Panel
+- صفحات قانونية (Privacy Policy, Terms & Conditions)
 
 ---
 
-## 🖼 Logo & Image Generation Prompts
-All AI prompts are **written in English**, include **Litchi Real Estate**, and are **production-ready**:
-
-- App logo  
-- Hero banners  
-- Social media posters  
-- Property cards  
-- Dashboard visuals  
-
-**Example prompt for property card:**
-
-> "Create a high-resolution property card for **Litchi Real Estate** showing a modern apartment, neon purple accents, premium glassmorphism style, dynamic lighting, logo watermark, with realistic details and young-adult vibe."
+## 🎨 التصميم والهوية البصرية Design & Branding
+- **Style:** Glassmorphism، Neon Purple، Premium
+- واجهة شبابية وعصرية
+- كل صورة تتضمن:
+  - شعار Litchi Real Estate
+  - اسم Litchi Real Estate كـ Watermark
+- واجهة تفاعلية مع Animations و Transitions
 
 ---
 
-## 🔒 Security & Quality
-- Input validation everywhere  
-- JWT authentication  
-- Rate limiting  
-- Secure file uploads  
-- No exposed secrets  
-- Robust error handling & logging  
-- Monitoring ready (Prometheus / Grafana)
+## 🖼️ برومبتات لتوليد الصور Logo & Image Prompts
+- App Logo
+- Hero Banners
+- Social Media Posters
+- Property Cards
+- Dashboard Visuals
+
+**مثال برومبت:**
+> "إنشاء بطاقة عقار عالية الجودة لمنصة **Litchi Real Estate**، تصميم Glassmorphism، Neon Purple، إضاءة ديناميكية، شعار Watermark، تفاصيل دقيقة، أسلوب شبابي وعصري."
 
 ---
 
-## 🚀 Deployment
-- Dockerized frontend + backend + Postgres + Redis  
-- CI/CD pipelines ready (GitHub Actions)  
-- Environment variables `.env` for secure configs  
-- Production-ready scripts & migrations  
-- Fully functional real-world flows (search, map, booking, chat, verification)
+## 🔒 الأمن والجودة Security & Quality
+- Input Validation في كل مكان
+- JWT Authentication
+- Rate Limiting
+- Secure File Uploads
+- لا يوجد Secrets مكشوفة
+- Robust Error Handling & Logging
+- Monitoring جاهز (Prometheus / Grafana)
 
 ---
 
-## 🗂 Directory Structure
+## 🚀 النشر Deployment
+- Dockerized Frontend + Backend + Postgres + Redis
+- CI/CD جاهز (GitHub Actions)
+- Environment Variables `.env` آمنة
+- Scripts و Migrations جاهزة للإنتاج
+- جميع التدفقات الحقيقية (بحث، خريطة، حجز، دردشة، تحقق)
+
+---
+
+## 🗂️ هيكلية المشروع Directory Structure
+```
+
+/litchi-real-estate
+│
+├─ frontend/      # React + Vite + TypeScript
+├─ backend/       # Node.js + Fastify + TypeScript
+├─ db/            # PostgreSQL schema + migrations
+├─ docker/        # Dockerfiles & docker-compose.yml
+├─ scripts/       # Setup, seeders, utilities
+├─ assets/        # Logos, images, banners
+└─ README.md      # هذا الملف
+
+```
+
+---
+
+## 🌐 الرؤية العالمية Global Vision
+منصة **Litchi Real Estate** مصممة لتوسيع نطاقها عالمياً، لتكون منصة موثوقة للشباب للعثور على المنازل، الغرف، والاستثمارات العقارية. كل ميزة مصممة لتوفير **سرعة، ثقة، وتجربة مستخدم رائعة**.
+
+---
+
+## 📞 للتواصل Contact
+- البريد الإلكتروني: contact@litchi.realestate  
+- الموقع الرسمي: [https://litchi.realestate](https://litchi.realestate)  
+- GitHub: [https://github.com/7knoxx7-spec/Litchi-Real-Estate](https://github.com/7knoxx7-spec/Litchi-Real-Estate)
+
+---
+
+> **ليتشي للعقارات — اكتشف منزلك المثالي فوراً، في أي مكان بالعالم.** 🌍💜
+```
